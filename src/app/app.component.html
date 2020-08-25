@@ -1,21 +1,111 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="jumbotron">
+  <div class="container">
+    <h1>{{title}}</h1>
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
-<router-outlet></router-outlet>
+<nav class="navbar navbar-inverse navbar-fixed-top"  *ngIf="userDetailsFlag">
+  <div class="container">
+    <div id="navbar" class="navbar-collapse collapse">
+      <form class="navbar-form navbar-right">
+        <div class="form-group">
+          <input #input (keyup)="onSearch(input.value)" type="text" placeholder="Search By Username" class="form-control" style="height: 20px;width: 20%;">
+        </div>
+      </form>
+    </div><!--/.navbar-collapse -->
+  </div>
+</nav>
+<br>
+<div>
+  <table id="tableid" style="width: 85%;" *ngIf="userDetailsFlag">
+      <thead>
+          <tr>
+            <td id="userDetailsTableContainer">
+                <div>
+                    Id
+                </div>
+            </td>
+            <td id="userDetailsTableContainer">
+              <div>
+                  Username
+              </div>
+          </td>
+          <td id="userDetailsTableContainer">
+            <div>
+                Node Id
+            </div>
+          </td>
+          <td id="userDetailsTableContainer">
+            <div>
+                Repo Link
+            </div>
+          </td>
+          <td id="userDetailsTableContainer">
+            <div>
+                URL
+            </div>
+          </td>
+          <td id="userDetailsTableContainer">
+            <div>
+                Followers URL
+            </div>
+          </td>
+        </tr>
+</thead>
+<tbody>
+  <tr
+      *ngFor="let t of users | paginate: { itemsPerPage: size, currentPage: page, totalItems: totalCount, id: 'user_list'}">
+      <td id="userDetailsValueContainer">{{t.id}}</td>
+      <td id="userDetailsValueContainer">{{t.login}}</td>
+      <td id="userDetailsValueContainer">{{t.node_id}}</td>
+      <td id="userDetailsValueContainer" style="cursor: pointer;" (click)="viewUser(t)">{{t.repos_url}}</td>
+      <td id="userDetailsValueContainer">{{t.url}}</td>
+      <td id="userDetailsValueContainer">{{t.followers_url}}</td>
+  </tr>
+</tbody>
+</table>
+<pagination-controls *ngIf="userDetailsFlag" (pageChange)="changePages($event)" autoHide="true" id="user_list"
+                            class="paginateResults"></pagination-controls>
+<div class="jumbotron" *ngIf="!userDetailsFlag">
+  <div class="container">
+    <h1>{{this.selectedUser.login}} Repos</h1>
+  </div>
+</div>
+<table id="tableid" style="width: 85%;" *ngIf="!userDetailsFlag">
+  <thead>
+      <tr>
+        <td id="userDetailsTableContainer">
+            <div>
+                Full Name
+            </div>
+        </td>
+        <td id="userDetailsTableContainer">
+          <div>
+              Git Url
+          </div>
+      </td>
+      <td id="userDetailsTableContainer">
+        <div>
+            Url
+        </div>
+      </td>
+      <td id="userDetailsTableContainer">
+        <div>
+          Watchers Count
+        </div>
+      </td>
+    </tr>
+</thead>
+<tbody>
+<tr
+  *ngFor="let t of this.selectedUser.Repos">
+  <td id="userDetailsValueContainer">{{t.full_name}}</td>
+  <td id="userDetailsValueContainer">{{t.git_url}}</td>
+  <td id="userDetailsValueContainer">{{t.url}}</td>
+  <td id="userDetailsValueContainer">{{t.watchers_count}}</td>
+</tr>
+</tbody>
+</table>
+<br>
+<button  *ngIf="!userDetailsFlag" style="background-color: deepskyblue;
+width: 10%;height: 30px;float: left;" (click)="back()">Back</button>
+</div>

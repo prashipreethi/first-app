@@ -1,0 +1,19 @@
+#tableid{
+    background-color:white !important;
+    border:1px solid #D9D9D8 !important;
+}
+
+#userDetailsTableContainer{
+	color: #000;
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 10px;
+    width: 21%;
+}
+
+#userDetailsValueContainer {
+	color: #5A5A5A;
+    font-family: "Helvetica Neue", sans-serif;
+	font-size: 14px;
+}
